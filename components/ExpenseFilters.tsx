@@ -13,18 +13,18 @@ export const ExpenseFilters = () => {
     useExpenses();
 
   return (
-    <div className="card-midnight rounded-xl border-[#1b3554] p-4 shadow-[0_4px_20px_rgba(0,15,34,0.5)] space-y-3">
+    <div className="card-midnight rounded-xl border-[#EED9CC] bg-white p-4 shadow-[0_4px_20px_rgba(158,24,43,0.04)] space-y-3">
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
         {/* Search input */}
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#80aad3]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9E182B]" />
           <Input
             data-testid="search-input"
             type="text"
             placeholder="Search by title or note..."
             value={filters.q}
             onChange={(e) => setSearchFilter(e.target.value)}
-            className="input-midnight pl-9 h-10 bg-[#091624] border-[#1b3554] text-[#e2f0fb] placeholder-[#5b86b6]/40"
+            className="input-midnight pl-9 h-10 bg-white border-[#EED9CC] text-[#2A080E] placeholder-[#A8858B]"
           />
         </div>
 
@@ -34,11 +34,11 @@ export const ExpenseFilters = () => {
             data-testid="filter-category"
             value={filters.category}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="flex h-10 w-full rounded-md border border-[#1b3554] bg-[#091624] px-3 py-2 text-sm text-[#e2f0fb] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5b86b6]"
+            className="flex h-10 w-full rounded-md border border-[#EED9CC] bg-white px-3 py-2 text-sm text-[#2A080E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9E182B]"
           >
-            <option value="" className="bg-[#0c1a2c] text-slate-300">All</option>
+            <option value="" className="bg-white text-slate-500">All</option>
             {CATEGORIES.map((cat) => (
-              <option key={cat} value={cat} className="bg-[#0c1a2c] text-[#e2f0fb]">
+              <option key={cat} value={cat} className="bg-white text-[#2A080E]">
                 {cat}
               </option>
             ))}
@@ -46,17 +46,17 @@ export const ExpenseFilters = () => {
         </div>
 
         {/* Starred filter checkbox */}
-        <div className="flex items-center gap-2 px-3 py-2 border border-[#1b3554] rounded-md bg-[#091624] h-10">
+        <div className="flex items-center gap-2 px-3 py-2 border border-[#EED9CC] rounded-md bg-white h-10">
           <input
             id="filter-starred"
             data-testid="filter-starred"
             type="checkbox"
             checked={filters.starred}
             onChange={(e) => setStarredFilter(e.target.checked)}
-            className="h-4 w-4 rounded border-[#1b3554] accent-[#5b86b6] cursor-pointer"
+            className="h-4 w-4 rounded border-[#EED9CC] accent-[#9E182B] cursor-pointer"
           />
-          <label htmlFor="filter-starred" className="text-sm font-medium cursor-pointer flex items-center gap-1.5 text-[#80aad3] hover:text-[#c0e6fd]">
-            <Star className={`h-3.5 w-3.5 ${filters.starred ? "text-amber-400 fill-amber-400" : "text-[#5b86b6]"}`} />
+          <label htmlFor="filter-starred" className="text-sm font-medium cursor-pointer flex items-center gap-1.5 text-[#7A4B54] hover:text-[#9E182B]">
+            <Star className={`h-3.5 w-3.5 ${filters.starred ? "text-amber-500 fill-amber-400" : "text-[#A8858B]"}`} />
             <span>Starred</span>
           </label>
         </div>
@@ -67,7 +67,7 @@ export const ExpenseFilters = () => {
           variant="outline"
           data-testid="btn-clear-filters"
           onClick={clearFilters}
-          className="gap-1.5 h-10 shrink-0 border-[#1b3554] bg-[#1b3554]/60 text-[#80aad3] hover:text-white hover:bg-[#1b3554]"
+          className="gap-1.5 h-10 shrink-0 border-[#EED9CC] bg-[#FAF4EF] text-[#7A4B54] hover:text-[#9E182B] hover:bg-[#F2E0D2]"
         >
           <RotateCcw className="h-3.5 w-3.5" />
           <span>Clear</span>

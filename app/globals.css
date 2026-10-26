@@ -4,89 +4,111 @@
 
 @layer base {
   :root {
-    --background: 214 100% 7%; /* #000f22 */
-    --foreground: 205 92% 87%; /* #c0e6fd */
-    --card: 213 58% 11%; /* #0c1c2e */
-    --card-foreground: 205 92% 95%;
-    --popover: 213 58% 11%;
-    --popover-foreground: 205 92% 95%;
-    --primary: 213 37% 53%; /* #5b86b6 */
+    --background: 0 0% 100%; /* #FFFFFF */
+    --foreground: 348 62% 10%; /* #2A080E deep rich wine */
+    --card: 0 0% 100%;
+    --card-foreground: 348 62% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 348 62% 10%;
+    --primary: 351 74% 36%; /* #9E182B red wine */
     --primary-foreground: 0 0% 100%;
-    --secondary: 212 51% 22%; /* #1b3554 */
-    --secondary-foreground: 205 92% 90%;
-    --muted: 212 51% 15%; /* #112235 */
-    --muted-foreground: 211 49% 66%; /* #80aad3 */
-    --accent: 213 40% 41%; /* #3f6593 */
-    --accent-foreground: 205 92% 95%;
-    --destructive: 0 72% 51%;
+    --secondary: 26 53% 89%; /* #F2E0D2 oat milk */
+    --secondary-foreground: 351 74% 36%;
+    --muted: 26 30% 96%; /* #FAF6F3 */
+    --muted-foreground: 348 24% 42%; /* #7A4B54 */
+    --accent: 346 74% 89%; /* #F9CBD6 rose quartz */
+    --accent-foreground: 351 74% 36%;
+    --destructive: 0 75% 55%;
     --destructive-foreground: 0 0% 100%;
-    --border: 212 51% 22%; /* #1b3554 */
-    --input: 214 60% 9%; /* #091624 */
-    --ring: 213 37% 53%; /* #5b86b6 */
+    --border: 26 40% 88%; /* #EED9CC oat milk */
+    --input: 26 40% 88%;
+    --ring: 351 74% 36%; /* #9E182B */
     --radius: 0.85rem;
   }
 }
 
 @layer base {
   * {
-    @apply border-[#1b3554];
+    @apply border-[#EED9CC];
   }
   html, body {
     @apply antialiased;
-    background: radial-gradient(circle at 50% -10%, #173254 0%, #000f22 65%, #000714 100%);
-    color: #e2f0fb;
+    background-color: #FFFFFF;
+    background-image: 
+      radial-gradient(at 10% 10%, rgba(249, 203, 214, 0.25) 0px, transparent 50%),
+      radial-gradient(at 90% 15%, rgba(242, 224, 210, 0.4) 0px, transparent 55%),
+      radial-gradient(at 50% 90%, rgba(242, 175, 188, 0.15) 0px, transparent 60%);
+    background-attachment: fixed;
+    color: #2A080E;
     max-width: 100vw;
     overflow-x: hidden;
     min-height: 100vh;
   }
 }
 
-/* Custom Palette Utility Classes */
-.btn-midnight-primary {
-  background: linear-gradient(135deg, #3f6593 0%, #5b86b6 100%);
-  color: #ffffff;
-  border: 1px solid rgba(192, 230, 253, 0.2);
-  box-shadow: 0 4px 16px rgba(63, 101, 147, 0.4);
+/* Red Wine, Blush, Rose Quartz, Oat Milk Utility Classes */
+.btn-midnight-primary,
+.btn-wine-primary {
+  background: linear-gradient(135deg, #9E182B 0%, #B82338 100%);
+  color: #FFFFFF !important;
+  border: 1px solid rgba(158, 24, 43, 0.3);
+  box-shadow: 0 4px 14px rgba(158, 24, 43, 0.25);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.btn-midnight-primary:hover {
-  background: linear-gradient(135deg, #4875a8 0%, #6a95c7 100%);
-  box-shadow: 0 6px 20px rgba(91, 134, 182, 0.55);
+.btn-midnight-primary:hover,
+.btn-wine-primary:hover {
+  background: linear-gradient(135deg, #871424 0%, #9E182B 100%);
+  box-shadow: 0 6px 20px rgba(158, 24, 43, 0.35);
   transform: translateY(-1px);
+  color: #FFFFFF !important;
 }
 
-.btn-midnight-secondary {
-  background: #1b3554;
-  border: 1px solid #3f6593;
-  color: #c0e6fd;
+.btn-midnight-secondary,
+.btn-wine-secondary {
+  background: #F2E0D2;
+  border: 1px solid #E5CCBA;
+  color: #9E182B !important;
+  font-weight: 600;
   transition: all 0.2s ease;
 }
 
-.btn-midnight-secondary:hover {
-  background: #25466e;
-  border-color: #5b86b6;
-  color: #ffffff;
+.btn-midnight-secondary:hover,
+.btn-wine-secondary:hover {
+  background: #E8D3C3;
+  border-color: #D6BAA6;
+  color: #871424 !important;
 }
 
-.card-midnight {
-  background: linear-gradient(180deg, rgba(20, 41, 68, 0.75) 0%, rgba(12, 26, 44, 0.85) 100%);
-  border: 1px solid #1b3554;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 32px rgba(0, 15, 34, 0.5);
+.card-midnight,
+.card-rose {
+  background: #FFFFFF;
+  border: 1px solid #EED9CC;
+  box-shadow: 0 4px 20px rgba(158, 24, 43, 0.04);
+  transition: all 0.2s ease;
 }
 
-.card-midnight:hover {
-  border-color: #3f6593;
+.card-midnight:hover,
+.card-rose:hover {
+  border-color: #F2AFBC;
+  box-shadow: 0 8px 30px rgba(242, 175, 188, 0.25);
 }
 
-.input-midnight {
-  background-color: #091624 !important;
-  border-color: #1b3554 !important;
-  color: #e2f0fb !important;
+.input-midnight,
+.input-rose {
+  background-color: #FFFFFF !important;
+  border-color: #EED9CC !important;
+  color: #2A080E !important;
 }
 
-.input-midnight:focus {
-  border-color: #5b86b6 !important;
-  box-shadow: 0 0 0 2px rgba(91, 134, 182, 0.3) !important;
+.input-midnight::placeholder,
+.input-rose::placeholder {
+  color: #A8858B !important;
 }
+
+.input-midnight:focus,
+.input-rose:focus {
+  border-color: #9E182B !important;
+  box-shadow: 0 0 0 2px rgba(158, 24, 43, 0.15) !important;
+}
+

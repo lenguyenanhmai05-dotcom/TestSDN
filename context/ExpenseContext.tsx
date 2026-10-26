@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from "react";
 import { useAuth } from "./AuthContext";
 
 export interface Expense {
@@ -56,6 +56,14 @@ interface ExpenseContextType {
 
 const ExpenseContext = createContext<ExpenseContextType | undefined>(undefined);
 
+const CATEGORY_PRIORITY: Record<string, number> = {
+  Food: 1,
+  Transport: 2,
+  Bills: 3,
+  Shopping: 4,
+  Other: 5,
+};
+
 const defaultSummary: ExpenseSummary = {
   count: 0,
   starredCount: 0,
@@ -63,91 +71,131 @@ const defaultSummary: ExpenseSummary = {
   breakdown: [],
 };
 
+const initialFilters: FilterState = {
+  category: "",
+  starred: false,
+  q: "",
+};
+
 export const ExpenseProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
-  const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [summary, setSummary] = useState<ExpenseSummary>(defaultSummary);
+  const [rawExpenses, setRawExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(false);
+  const [filters, setFilters] = useState<FilterState>(initialFilters);
 
-  const [filters, setFilters] = useState<FilterState>({
-    category: "",
-    starred: false,
-    q: "",
-  });
+  // Load expenses once after login; clear cleanly on logout
+  useEffect(() => {
+    let isMounted = true;
 
-  const buildQueryString = useCallback((f: FilterState) => {
-    const params = new URLSearchParams();
-    if (f.category && f.category.trim()) {
-      params.set("category", f.category.trim());
+    if (user) {
+      setLoading(true);
+      fetch("/api/expenses", { cache: "no-store" })
+        .then(async (res) => {
+          if (!res.ok) return [];
+          return res.json();
+        })
+        .then((data) => {
+          if (isMounted) {
+            setRawExpenses(Array.isArray(data) ? data : []);
+          }
+        })
+        .catch(() => {
+          if (isMounted) {
+            setRawExpenses([]);
+          }
+        })
+        .finally(() => {
+          if (isMounted) {
+            setLoading(false);
+          }
+        });
+    } else {
+      setRawExpenses([]);
+      setFilters(initialFilters);
+      setLoading(false);
     }
-    if (f.starred) {
-      params.set("starred", "true");
-    }
-    if (f.q && f.q.trim()) {
-      params.set("q", f.q.trim());
-    }
-    const str = params.toString();
-    return str ? `?${str}` : "";
+
+    return () => {
+      isMounted = false;
+    };
+  }, [user?.id]);
+
+  const setCategoryFilter = useCallback((category: string) => {
+    setFilters((prev) => ({ ...prev, category }));
   }, []);
 
-  const fetchExpensesAndSummary = useCallback(
-    async (currentFilters: FilterState) => {
-      if (!user) {
-        setExpenses([]);
-        setSummary(defaultSummary);
-        return;
-      }
-
-      setLoading(true);
-      const query = buildQueryString(currentFilters);
-
-      try {
-        const [expRes, sumRes] = await Promise.all([
-          fetch(`/api/expenses${query}`, { cache: "no-store" }),
-          fetch(`/api/expenses/summary${query}`, { cache: "no-store" }),
-        ]);
-
-        if (expRes.ok && sumRes.ok) {
-          const expData = await expRes.json();
-          const sumData = await sumRes.json();
-          setExpenses(expData);
-          setSummary(sumData);
-        }
-      } catch (err) {
-        console.error("Error fetching expenses and summary:", err);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [user, buildQueryString]
-  );
-
-  // Fetch when user changes or filters change
-  useEffect(() => {
-    if (user) {
-      fetchExpensesAndSummary(filters);
-    } else {
-      setExpenses([]);
-      setSummary(defaultSummary);
-      setFilters({ category: "", starred: false, q: "" });
-    }
-  }, [user, filters, fetchExpensesAndSummary]);
-
-  const setCategoryFilter = (category: string) => {
-    setFilters((prev) => ({ ...prev, category }));
-  };
-
-  const setStarredFilter = (starred: boolean) => {
+  const setStarredFilter = useCallback((starred: boolean) => {
     setFilters((prev) => ({ ...prev, starred }));
-  };
+  }, []);
 
-  const setSearchFilter = (q: string) => {
+  const setSearchFilter = useCallback((q: string) => {
     setFilters((prev) => ({ ...prev, q }));
-  };
+  }, []);
 
-  const clearFilters = () => {
-    setFilters({ category: "", starred: false, q: "" });
-  };
+  const clearFilters = useCallback(() => {
+    setFilters(initialFilters);
+  }, []);
+
+  // Filtered expenses shared across list and summary
+  const expenses = useMemo(() => {
+    return rawExpenses.filter((item) => {
+      if (filters.category && filters.category.trim() && item.category !== filters.category.trim()) {
+        return false;
+      }
+      if (filters.starred && !item.starred) {
+        return false;
+      }
+      if (filters.q && filters.q.trim()) {
+        const query = filters.q.trim().toLowerCase();
+        const matchTitle = (item.title || "").toLowerCase().includes(query);
+        const matchNote = (item.note || "").toLowerCase().includes(query);
+        if (!matchTitle && !matchNote) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }, [rawExpenses, filters]);
+
+  // Live summary and breakdown calculated over matching items
+  const summary = useMemo<ExpenseSummary>(() => {
+    const count = expenses.length;
+    const starredCount = expenses.filter((e) => Boolean(e.starred)).length;
+    const rawTotal = expenses.reduce((acc, curr) => acc + Number(curr.amount || 0), 0);
+    const totalAmount = Number(rawTotal.toFixed(2));
+
+    const categoryMap: Record<string, { count: number; total: number }> = {};
+    for (const exp of expenses) {
+      const cat = exp.category;
+      if (!categoryMap[cat]) {
+        categoryMap[cat] = { count: 0, total: 0 };
+      }
+      categoryMap[cat].count += 1;
+      categoryMap[cat].total += Number(exp.amount || 0);
+    }
+
+    const breakdown = Object.entries(categoryMap)
+      .map(([cat, data]) => ({
+        category: cat,
+        count: data.count,
+        total: Number(data.total.toFixed(2)),
+      }))
+      .sort((a, b) => {
+        if (b.total !== a.total) {
+          return b.total - a.total;
+        }
+        const prioA = CATEGORY_PRIORITY[a.category] || 99;
+        const prioB = CATEGORY_PRIORITY[b.category] || 99;
+        return prioA - prioB;
+      });
+
+    return {
+      count,
+      starredCount,
+      totalAmount,
+      breakdown,
+    };
+  }, [expenses]);
 
   const addExpense = async (expenseData: {
     title: string;
@@ -168,8 +216,7 @@ export const ExpenseProvider = ({ children }: { children: React.ReactNode }) => 
         return { success: false, error: data.error || "Failed to add expense" };
       }
 
-      // Re-fetch with current filters so list and summary update immediately
-      await fetchExpensesAndSummary(filters);
+      setRawExpenses((prev) => [data, ...prev]);
       return { success: true };
     } catch {
       return { success: false, error: "Network error adding expense" };
@@ -177,10 +224,15 @@ export const ExpenseProvider = ({ children }: { children: React.ReactNode }) => 
   };
 
   const toggleStar = async (id: string) => {
-    const current = expenses.find((e) => e.id === id);
+    const current = rawExpenses.find((e) => e.id === id);
     if (!current) return { success: false, error: "Expense not found" };
 
     const newStarred = !current.starred;
+
+    // Optimistically update
+    setRawExpenses((prev) =>
+      prev.map((e) => (e.id === id ? { ...e, starred: newStarred } : e))
+    );
 
     try {
       const res = await fetch(`/api/expenses/${id}`, {
@@ -191,17 +243,26 @@ export const ExpenseProvider = ({ children }: { children: React.ReactNode }) => 
 
       const data = await res.json();
       if (!res.ok) {
+        // Rollback on failure
+        setRawExpenses((prev) =>
+          prev.map((e) => (e.id === id ? { ...e, starred: current.starred } : e))
+        );
         return { success: false, error: data.error || "Failed to toggle star" };
       }
 
-      await fetchExpensesAndSummary(filters);
       return { success: true };
     } catch {
+      setRawExpenses((prev) =>
+        prev.map((e) => (e.id === id ? { ...e, starred: current.starred } : e))
+      );
       return { success: false, error: "Network error updating star" };
     }
   };
 
   const deleteExpense = async (id: string) => {
+    const currentList = rawExpenses;
+    setRawExpenses((prev) => prev.filter((e) => e.id !== id));
+
     try {
       const res = await fetch(`/api/expenses/${id}`, {
         method: "DELETE",
@@ -209,18 +270,29 @@ export const ExpenseProvider = ({ children }: { children: React.ReactNode }) => 
 
       const data = await res.json();
       if (!res.ok) {
+        setRawExpenses(currentList);
         return { success: false, error: data.error || "Failed to delete expense" };
       }
 
-      await fetchExpensesAndSummary(filters);
       return { success: true };
     } catch {
+      setRawExpenses(currentList);
       return { success: false, error: "Network error deleting expense" };
     }
   };
 
   const refreshExpenses = async () => {
-    await fetchExpensesAndSummary(filters);
+    if (!user) return;
+    try {
+      setLoading(true);
+      const res = await fetch("/api/expenses", { cache: "no-store" });
+      if (res.ok) {
+        const data = await res.json();
+        setRawExpenses(Array.isArray(data) ? data : []);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -252,3 +324,4 @@ export const useExpenses = () => {
   }
   return context;
 };
+

@@ -43,6 +43,17 @@ const config: Config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+        rosequartz: "#F9CBD6",
+        blush: "#F2AFBC",
+        redwine: {
+          DEFAULT: "#9E182B",
+          hover: "#871424",
+          light: "#FDF2F4",
+        },
+        oatmilk: {
+          DEFAULT: "#F2E0D2",
+          light: "#FAF4EF",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

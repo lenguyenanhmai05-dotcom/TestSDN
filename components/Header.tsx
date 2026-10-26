@@ -9,13 +9,13 @@ export const Header = () => {
   const { user, logout } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#1b3554] bg-[#000f22]/90 backdrop-blur supports-[backdrop-filter]:bg-[#000f22]/80 shadow-[0_4px_20px_rgba(0,15,34,0.6)]">
+    <header className="sticky top-0 z-50 w-full border-b border-[#F2E0D2] bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/80 shadow-[0_2px_15px_rgba(158,24,43,0.05)]">
       <div className="container flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 mx-auto">
         <Link href="/" className="flex items-center gap-2.5 font-bold text-lg tracking-tight hover:opacity-90 transition">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#3f6593] to-[#5b86b6] text-white shadow-[0_0_15px_rgba(91,134,182,0.4)] border border-[#80aad3]/30">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#9E182B] to-[#C8344A] text-white shadow-[0_2px_10px_rgba(158,24,43,0.3)] border border-[#F2AFBC]/40">
             <Wallet className="h-5 w-5" />
           </div>
-          <span className="text-white font-extrabold tracking-tight">
+          <span className="text-[#9E182B] font-extrabold tracking-tight">
             ExpenseTrail
           </span>
         </Link>
@@ -26,13 +26,13 @@ export const Header = () => {
               <Link
                 href="/expenses"
                 data-testid="link-expenses"
-                className="text-sm font-semibold text-[#80aad3] hover:text-[#c0e6fd] transition px-2 py-1"
+                className="text-sm font-semibold text-[#7A4B54] hover:text-[#9E182B] transition px-2 py-1"
               >
                 Expenses
               </Link>
 
-              <div className="flex items-center gap-2 rounded-full border border-[#3f6593]/60 bg-[#1b3554]/70 px-3.5 py-1 text-xs sm:text-sm text-[#c0e6fd] font-medium shadow-sm">
-                <UserIcon className="h-3.5 w-3.5 text-[#80aad3]" />
+              <div className="flex items-center gap-2 rounded-full border border-[#F9CBD6] bg-[#FFF5F7] px-3.5 py-1 text-xs sm:text-sm text-[#9E182B] font-medium shadow-sm">
+                <UserIcon className="h-3.5 w-3.5 text-[#9E182B]" />
                 <span data-testid="user-email" className="truncate max-w-[150px] sm:max-w-[220px]">
                   {user.email}
                 </span>
@@ -42,7 +42,7 @@ export const Header = () => {
                 type="button"
                 data-testid="btn-logout"
                 onClick={logout}
-                className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-[#1b3554] bg-[#0c1a2c] text-sm font-medium text-[#80aad3] hover:text-white hover:bg-[#1b3554] hover:border-[#3f6593] transition cursor-pointer"
+                className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-[#EED9CC] bg-[#FAF4EF] text-sm font-medium text-[#7A4B54] hover:text-[#9E182B] hover:bg-[#F2E0D2] hover:border-[#F2AFBC] transition cursor-pointer"
               >
                 <LogOut className="h-3.5 w-3.5" />
                 <span>Logout</span>
@@ -53,7 +53,7 @@ export const Header = () => {
               <Link
                 href="/login"
                 data-testid="btn-login"
-                className="inline-flex items-center justify-center h-9 px-3.5 rounded-lg text-sm font-semibold text-[#80aad3] hover:text-white hover:bg-[#1b3554] transition cursor-pointer"
+                className="inline-flex items-center justify-center h-9 px-3.5 rounded-lg text-sm font-semibold text-[#7A4B54] hover:text-[#9E182B] hover:bg-[#FAF4EF] transition cursor-pointer"
               >
                 Login
               </Link>

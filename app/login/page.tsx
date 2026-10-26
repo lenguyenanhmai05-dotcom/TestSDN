@@ -86,25 +86,25 @@ export default function LoginPage() {
 
   return (
     <div className="flex-1 flex items-center justify-center px-4 py-12">
-      <Card className="w-full max-w-md card-midnight rounded-2xl border-[#1b3554] shadow-[0_12px_40px_rgba(0,15,34,0.7)]">
+      <Card className="w-full max-w-md card-midnight rounded-2xl border-[#EED9CC] bg-white shadow-[0_8px_30px_rgba(158,24,43,0.08)]">
         <CardHeader className="space-y-1 text-center pb-4">
-          <CardTitle className="text-2xl font-bold text-white">Welcome back</CardTitle>
-          <CardDescription className="text-[#80aad3] font-normal">Enter your email and password to log in</CardDescription>
+          <CardTitle className="text-2xl font-bold text-[#2A080E]">Welcome back</CardTitle>
+          <CardDescription className="text-[#7A4B54] font-normal">Enter your email and password to log in</CardDescription>
         </CardHeader>
         <CardContent>
           {errors.auth && (
             <div
               data-testid="error-auth"
-              className="mb-4 flex items-center gap-2 rounded-lg bg-rose-950/40 p-3 text-sm text-rose-300 border border-rose-800/60"
+              className="mb-4 flex items-center gap-2 rounded-lg bg-rose-50 p-3 text-sm text-rose-800 border border-rose-200"
             >
-              <AlertCircle className="h-4 w-4 text-rose-400" />
+              <AlertCircle className="h-4 w-4 text-rose-600" />
               <span className="font-medium">{errors.auth}</span>
             </div>
           )}
 
           <form noValidate data-testid="login-form" onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="login-email" className="text-[#c0e6fd] font-semibold">Email</Label>
+              <Label htmlFor="login-email" className="text-[#2A080E] font-semibold">Email</Label>
               <Input
                 id="login-email"
                 data-testid="login-email"
@@ -112,17 +112,17 @@ export default function LoginPage() {
                 placeholder="name@example.com"
                 value={email}
                 onChange={handleEmailChange}
-                className="input-midnight bg-[#091624] border-[#1b3554] text-[#e2f0fb] placeholder-[#5b86b6]/40"
+                className="input-midnight bg-white border-[#EED9CC] text-[#2A080E] placeholder-[#A8858B]"
               />
               {errors.email && (
-                <p data-testid="error-email" className="text-xs text-rose-400 font-medium">
+                <p data-testid="error-email" className="text-xs text-rose-600 font-medium">
                   {errors.email}
                 </p>
               )}
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="login-password" className="text-[#c0e6fd] font-semibold">Password</Label>
+              <Label htmlFor="login-password" className="text-[#2A080E] font-semibold">Password</Label>
               <Input
                 id="login-password"
                 data-testid="login-password"
@@ -130,10 +130,10 @@ export default function LoginPage() {
                 placeholder="••••••••"
                 value={password}
                 onChange={handlePasswordChange}
-                className="input-midnight bg-[#091624] border-[#1b3554] text-[#e2f0fb] placeholder-[#5b86b6]/40"
+                className="input-midnight bg-white border-[#EED9CC] text-[#2A080E] placeholder-[#A8858B]"
               />
               {errors.password && (
-                <p data-testid="error-password" className="text-xs text-rose-400 font-medium">
+                <p data-testid="error-password" className="text-xs text-rose-600 font-medium">
                   {errors.password}
                 </p>
               )}
@@ -150,9 +150,9 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <div className="mt-5 text-center text-sm text-[#80aad3]">
+          <div className="mt-5 text-center text-sm text-[#7A4B54]">
             Don&apos;t have an account?{" "}
-            <Link href="/register" className="text-[#c0e6fd] hover:underline font-semibold">
+            <Link href="/register" className="text-[#9E182B] hover:underline font-semibold">
               Register here
             </Link>
           </div>

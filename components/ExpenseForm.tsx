@@ -156,17 +156,17 @@ export const ExpenseForm = () => {
   };
 
   return (
-    <Card className="card-midnight rounded-2xl border-[#1b3554] shadow-[0_8px_30px_rgba(0,15,34,0.6)]">
+    <Card className="card-midnight rounded-2xl border-[#EED9CC] bg-white shadow-[0_4px_24px_rgba(158,24,43,0.06)]">
       <CardHeader className="pb-4">
-        <CardTitle className="text-xl font-bold text-white">Add Expense</CardTitle>
+        <CardTitle className="text-xl font-bold text-[#2A080E]">Add Expense</CardTitle>
       </CardHeader>
       <CardContent>
         {success && (
           <div
             data-testid="expense-success"
-            className="mb-4 flex items-center gap-2 rounded-lg bg-emerald-950/40 p-3 text-sm text-emerald-300 border border-emerald-800/60 font-medium"
+            className="mb-4 flex items-center gap-2 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800 border border-emerald-200 font-medium"
           >
-            <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+            <CheckCircle2 className="h-4 w-4 text-emerald-600" />
             <span>Expense added</span>
           </div>
         )}
@@ -174,17 +174,17 @@ export const ExpenseForm = () => {
         {errors.expense && (
           <div
             data-testid="error-expense"
-            className="mb-4 flex items-center gap-2 rounded-lg bg-rose-950/40 p-3 text-sm text-rose-300 border border-rose-800/60"
+            className="mb-4 flex items-center gap-2 rounded-lg bg-rose-50 p-3 text-sm text-rose-800 border border-rose-200"
           >
-            <AlertCircle className="h-4 w-4 text-rose-400" />
-            <span className="text-rose-300 font-medium">{errors.expense}</span>
+            <AlertCircle className="h-4 w-4 text-rose-600" />
+            <span className="text-rose-800 font-medium">{errors.expense}</span>
           </div>
         )}
 
         <form noValidate data-testid="expense-form" onSubmit={handleSubmit} className="space-y-4">
           {/* Title */}
           <div className="space-y-1.5">
-            <Label htmlFor="input-title" className="text-[#c0e6fd] font-semibold">Title *</Label>
+            <Label htmlFor="input-title" className="text-[#2A080E] font-semibold">Title *</Label>
             <Input
               id="input-title"
               data-testid="input-title"
@@ -192,10 +192,10 @@ export const ExpenseForm = () => {
               placeholder="e.g. Lunch with colleagues"
               value={title}
               onChange={handleTitleChange}
-              className="input-midnight bg-[#091624] border-[#1b3554] text-[#e2f0fb] placeholder-[#5b86b6]/40"
+              className="input-midnight bg-white border-[#EED9CC] text-[#2A080E] placeholder-[#A8858B]"
             />
             {errors.title && (
-              <p data-testid="error-title" className="text-xs text-rose-400 font-medium">
+              <p data-testid="error-title" className="text-xs text-rose-600 font-medium">
                 {errors.title}
               </p>
             )}
@@ -203,7 +203,7 @@ export const ExpenseForm = () => {
 
           {/* Amount */}
           <div className="space-y-1.5">
-            <Label htmlFor="input-amount" className="text-[#c0e6fd] font-semibold">Amount *</Label>
+            <Label htmlFor="input-amount" className="text-[#2A080E] font-semibold">Amount *</Label>
             <Input
               id="input-amount"
               data-testid="input-amount"
@@ -212,10 +212,10 @@ export const ExpenseForm = () => {
               placeholder="0.00"
               value={amount}
               onChange={handleAmountChange}
-              className="input-midnight bg-[#091624] border-[#1b3554] text-[#e2f0fb] placeholder-[#5b86b6]/40 font-mono"
+              className="input-midnight bg-white border-[#EED9CC] text-[#2A080E] placeholder-[#A8858B] font-mono"
             />
             {errors.amount && (
-              <p data-testid="error-amount" className="text-xs text-rose-400 font-medium">
+              <p data-testid="error-amount" className="text-xs text-rose-600 font-medium">
                 {errors.amount}
               </p>
             )}
@@ -223,23 +223,23 @@ export const ExpenseForm = () => {
 
           {/* Category */}
           <div className="space-y-1.5">
-            <Label htmlFor="input-category" className="text-[#c0e6fd] font-semibold">Category *</Label>
+            <Label htmlFor="input-category" className="text-[#2A080E] font-semibold">Category *</Label>
             <select
               id="input-category"
               data-testid="input-category"
               value={category}
               onChange={handleCategoryChange}
-              className="flex h-10 w-full rounded-md border border-[#1b3554] bg-[#091624] px-3 py-2 text-sm text-[#e2f0fb] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5b86b6] focus-visible:ring-offset-0"
+              className="flex h-10 w-full rounded-md border border-[#EED9CC] bg-white px-3 py-2 text-sm text-[#2A080E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9E182B] focus-visible:ring-offset-0"
             >
-              <option value="" className="bg-[#0c1a2c] text-slate-300">Choose category</option>
+              <option value="" className="bg-white text-slate-500">Choose category</option>
               {CATEGORIES.map((cat) => (
-                <option key={cat} value={cat} className="bg-[#0c1a2c] text-[#e2f0fb]">
+                <option key={cat} value={cat} className="bg-white text-[#2A080E]">
                   {cat}
                 </option>
               ))}
             </select>
             {errors.category && (
-              <p data-testid="error-category" className="text-xs text-rose-400 font-medium">
+              <p data-testid="error-category" className="text-xs text-rose-600 font-medium">
                 {errors.category}
               </p>
             )}
@@ -247,17 +247,17 @@ export const ExpenseForm = () => {
 
           {/* Date */}
           <div className="space-y-1.5">
-            <Label htmlFor="input-date" className="text-[#c0e6fd] font-semibold">Date *</Label>
+            <Label htmlFor="input-date" className="text-[#2A080E] font-semibold">Date *</Label>
             <Input
               id="input-date"
               data-testid="input-date"
               type="date"
               value={date}
               onChange={handleDateChange}
-              className="input-midnight bg-[#091624] border-[#1b3554] text-[#e2f0fb] placeholder-[#5b86b6]/40"
+              className="input-midnight bg-white border-[#EED9CC] text-[#2A080E] placeholder-[#A8858B]"
             />
             {errors.date && (
-              <p data-testid="error-date" className="text-xs text-rose-400 font-medium">
+              <p data-testid="error-date" className="text-xs text-rose-600 font-medium">
                 {errors.date}
               </p>
             )}
@@ -265,7 +265,7 @@ export const ExpenseForm = () => {
 
           {/* Note */}
           <div className="space-y-1.5">
-            <Label htmlFor="input-note" className="text-[#c0e6fd] font-semibold">Note (optional)</Label>
+            <Label htmlFor="input-note" className="text-[#2A080E] font-semibold">Note (optional)</Label>
             <Input
               id="input-note"
               data-testid="input-note"
@@ -273,7 +273,7 @@ export const ExpenseForm = () => {
               placeholder="Additional details"
               value={note}
               onChange={(e) => setNote(e.target.value)}
-              className="input-midnight bg-[#091624] border-[#1b3554] text-[#e2f0fb] placeholder-[#5b86b6]/40"
+              className="input-midnight bg-white border-[#EED9CC] text-[#2A080E] placeholder-[#A8858B]"
             />
           </div>
 

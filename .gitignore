@@ -34,6 +34,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 QE190151.zip
+QE190151.docx
+*.zip
+*.docx
 .local_data.json
 
 
