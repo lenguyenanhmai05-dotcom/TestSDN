@@ -30,7 +30,7 @@ async function generateDocx() {
           new Paragraph({
             children: [
               new TextRun({
-                text: "GitHub Repository URL: https://github.com/your-username/ExpenseTrail",
+                text: "GitHub Repository URL: https://github.com/lenguyenanhmai05-dotcom/TestSDN",
                 size: 24,
               }),
             ],
